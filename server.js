@@ -1,13 +1,46 @@
 const fs = require('fs');
 const path = require('path');
+const yargs = require('yargs');
 
 
-const src = path.join(process.argv[1],process.argv[2]);
-const dest = path.join(process.argv[1],process.argv[3]);
-const deleting = process.argv[4];
-var counter=0;
-var length=0;
+//const src = path.join(process.argv[1],process.argv[2]);
+//const dest = path.join(process.argv[1],process.argv[3]);
+//const deleting = process.argv[4];
 
+
+
+const argv = yargs
+    .usage('Usage $0 [options]')
+    .help('help')
+    .alias('help', 'h')
+    .version('0.0.1')
+    .alias('version', 'v')
+    .example('$0 --entry ./filesDir -d')
+    .option('entry',{
+        alias:'e',
+        describe:'The path of source directory',
+        demandOption: true
+    })
+    .option('output',{
+        alias:'o',
+        describe:'The path of output directory',
+        default: '/dest'
+    })
+    .option('delete',{
+        alias: 'd',
+        describe:'Delete source directiory',
+        default: false
+    })
+    .argv
+
+    console.log(argv);
+
+
+
+
+const src = path.normalize(path.join(__dirname,argv.entry));
+const dest = path.normalize(path.join(__dirname,argv.output));
+const deleting = argv.delete;
 
 
 const readDir=(base,dest,deleting,level)=>{
@@ -66,6 +99,7 @@ const readDir=(base,dest,deleting,level)=>{
         return;
     }
 }
+
 readDir(src,dest,deleting,0);
 
    
