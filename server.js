@@ -1,15 +1,19 @@
 var http = require('http');
+var interval,
+    timeout;
 
 const server = http.createServer(()=>{
     console.log('http server running');
+     interval = 2000;
+     timeout = 10000;
 }).listen(3000);
 
 server.on('request',(req,res)=>{
-    const consoleTime = setInterval(()=>{console.log(getTime());},2000);
+    const consoleTime = setInterval(()=>{console.log(getTime());},interval);
     const resTime = setTimeout(()=>{
         res.end(`${getTime()}`);
         clearInterval(consoleTime);
-    },10000);
+    },timeout);
 });
 
 
