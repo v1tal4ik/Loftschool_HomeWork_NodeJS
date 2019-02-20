@@ -1,12 +1,15 @@
-var http = require('http');
-var interval,
-    timeout;
+require('dotenv').config();
 
-const server = http.createServer(()=>{
-    console.log('http server running');
-     interval = 2000;
-     timeout = 10000;
-}).listen(3000);
+var http = require('http');
+var interval = process.env.INTERVAL;
+var timeout = process.env.TIMEOUT;
+
+console.log('interval ',interval);
+console.log('timeout ',timeout);
+const server = http.createServer().listen(3000,()=>{
+    console.log('Сервер запущено на порті 3000 ')
+});
+
 
 server.on('request',(req,res)=>{
     const consoleTime = setInterval(()=>{console.log(getTime());},interval);
@@ -15,8 +18,6 @@ server.on('request',(req,res)=>{
         clearInterval(consoleTime);
     },timeout);
 });
-
-
 
 function getTime(){
     let date = new Date(),
